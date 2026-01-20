@@ -33,11 +33,17 @@ def get_subtitles():
         return []
 
     srt = data.get("srt")
-    if not srt:
-        return []
+if not srt:
+    return []
 
-    return [{
-        "language_name": LANG,
-        "language_flag": LANG,
-        "filename": srt
-    }]
+# Build full URL
+if srt.startswith("/"):
+    srt_url = SERVER.rstrip("/") + srt
+else:
+    srt_url = srt
+
+return [{
+    "language_name": LANG,
+    "language_flag": LANG,
+    "filename": srt_url
+}]
