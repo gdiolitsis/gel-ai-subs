@@ -5,8 +5,7 @@ from flask import Flask, request, jsonify
 import whisper
 import os
 import hashlib
-
-app = Flask(__name__)
+from flask import send_from_directory
 
 # Load Whisper model
 model = whisper.load_model("base")
@@ -35,9 +34,9 @@ def transcribe():
     # Cache hit
     if os.path.exists(srt_path):
         return jsonify({
-            "cached": True,
-            "srt": srt_path
-        })
+    "cached": True,
+    "srt": f"/subs/{os.path.basename(srt_path)}"
+})
 
     # Transcribe
     result = model.transcribe(
@@ -53,9 +52,15 @@ def transcribe():
             f.write(seg["text"].strip() + "\n\n")
 
     return jsonify({
-        "cached": False,
-        "srt": srt_path
-    })
+    "cached": False,
+    "srt": f"/subs/{os.path.basename(srt_path)}"
+})
+    
+@app.route("/subs/<filename>", methods=["GET"])
+def download_sub(filename):
+    return send_from_directory(SUB_DIR, filename, as_attachment=False)
+
+app = Flask(__name__)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=9000)
