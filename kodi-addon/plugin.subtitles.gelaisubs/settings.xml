@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+    <setting id="server_url"
+             type="text"
+             label="Whisper Server URL"
+             default="http://localhost:9000" />
+
+    <setting id="language"
+             type="text"
+             label="Language (auto, en, el, fr...)"
+             default="auto" />
+
+    <setting id="auto_generate"
+             type="bool"
+             label="Auto-generate subtitles on playback"
+             default="true" />
+</settings>
